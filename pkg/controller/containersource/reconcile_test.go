@@ -615,8 +615,4 @@ func TestInjectConfig(t *testing.T) {
 	r := reconciler{}
 
 	r.InjectConfig(&rest.Config{})
-
-	if r.dynamicClient == nil {
-		t.Errorf("dynamicClient was nil but expected non nil")
-	}
 }

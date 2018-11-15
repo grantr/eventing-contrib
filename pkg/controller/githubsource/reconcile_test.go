@@ -434,7 +434,6 @@ func TestAllCases(t *testing.T) {
 
 	for _, tc := range testCases {
 		c := tc.GetClient()
-		dc := tc.GetDynamicClient()
 
 		var hookData webhookCreatorData
 		var ok bool
@@ -443,9 +442,8 @@ func TestAllCases(t *testing.T) {
 		}
 
 		r := &reconciler{
-			dynamicClient: dc,
-			scheme:        tc.Scheme,
-			recorder:      recorder,
+			scheme:   tc.Scheme,
+			recorder: recorder,
 			webhookClient: &mockWebhookClient{
 				data: hookData,
 			},
@@ -651,10 +649,6 @@ func TestInjectConfig(t *testing.T) {
 	r := reconciler{}
 
 	r.InjectConfig(&rest.Config{})
-
-	if r.dynamicClient == nil {
-		t.Error("dynamicClient was nil but expected non nil")
-	}
 }
 
 func TestOwnerAndRepositoryValid(t *testing.T) {

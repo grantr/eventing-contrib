@@ -92,10 +92,6 @@ func TestInjectConfig(t *testing.T) {
 	r := reconciler{}
 
 	r.InjectConfig(&rest.Config{})
-
-	if r.dynamicClient == nil {
-		t.Errorf("dynamicClient was nil but expected non nil")
-	}
 }
 
 func TestReconcile(t *testing.T) {
@@ -298,9 +294,8 @@ func TestReconcile(t *testing.T) {
 
 		c := tc.GetClient()
 		r := &reconciler{
-			client:        c,
-			dynamicClient: tc.GetDynamicClient(),
-			scheme:        tc.Scheme,
+			client: c,
+			scheme: tc.Scheme,
 
 			pubSubClientCreator: createPubSubClientCreator(tc.OtherTestData[pscData]),
 

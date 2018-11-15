@@ -216,7 +216,5 @@ func (r *reconciler) InjectClient(c client.Client) error {
 }
 
 func (r *reconciler) InjectConfig(c *rest.Config) error {
-	var err error
-	r.dynamicClient, err = dynamic.NewForConfig(c)
-	return err
+	return nil
 }
