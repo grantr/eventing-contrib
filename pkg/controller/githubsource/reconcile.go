@@ -95,7 +95,7 @@ func (r *reconciler) reconcile(ctx context.Context, source *sourcesv1alpha1.GitH
 	}
 	source.Status.MarkSecrets()
 
-	uri, err := sinks.GetSinkURI(r.dynamicClient, source.Spec.Sink, source.Namespace)
+	uri, err := sinks.GetSinkURI(ctx, r.client, source.Spec.Sink, source.Namespace)
 	if err != nil {
 		source.Status.MarkNoSink("NotFound", "%s", err)
 		return err

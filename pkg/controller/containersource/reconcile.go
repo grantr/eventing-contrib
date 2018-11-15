@@ -84,7 +84,7 @@ func (r *reconciler) Reconcile(ctx context.Context, object runtime.Object) (runt
 		ServiceAccountName: source.Spec.ServiceAccountName,
 	}
 
-	err = r.setSinkURIArg(source, args)
+	err = r.setSinkURIArg(ctx, source, args)
 	if err != nil {
 		return source, err
 	}
@@ -134,7 +134,7 @@ func (r *reconciler) Reconcile(ctx context.Context, object runtime.Object) (runt
 	return source, nil
 }
 
-func (r *reconciler) setSinkURIArg(source *v1alpha1.ContainerSource, args *resources.ContainerArguments) error {
+func (r *reconciler) setSinkURIArg(ctx context.Context, source *v1alpha1.ContainerSource, args *resources.ContainerArguments) error {
 	if uri, ok := sinkArg(source); ok {
 		args.SinkInArgs = true
 		source.Status.MarkSink(uri)
@@ -146,7 +146,7 @@ func (r *reconciler) setSinkURIArg(source *v1alpha1.ContainerSource, args *resou
 		return fmt.Errorf("Sink missing from spec")
 	}
 
-	uri, err := sinks.GetSinkURI(r.dynamicClient, source.Spec.Sink, source.Namespace)
+	uri, err := sinks.GetSinkURI(ctx, r.client, source.Spec.Sink, source.Namespace)
 	if err != nil {
 		source.Status.MarkNoSink("NotFound", "")
 		return err
